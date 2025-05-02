@@ -97,10 +97,10 @@ todo-app/
 │   └── package.json
 └── frontend/
     ├── src/
-    │   ├── components/
     │   ├── App.tsx
-    │   └── index.tsx
+    │   └── main.tsx
     ├── public/
+    ├── index.html
     └── package.json
 ```
 
