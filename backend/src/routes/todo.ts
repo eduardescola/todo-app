@@ -44,4 +44,17 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
+router.patch('/:id/edit', async (req, res) => {
+  try {
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      req.params.id,
+      { text: req.body.text },
+      { new: true }
+    );
+    res.json(updatedTodo);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 export default router;

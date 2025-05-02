@@ -9,10 +9,16 @@ interface Task {
 }
 
 const priorityColors = [
-  'border-l-4 border-gray-400',
-  'border-l-4 border-yellow-400',
-  'border-l-4 border-orange-500',
-  'border-l-4 border-red-600',
+  'border-l-4 border-gray-400',    // 0
+  'border-l-4 border-yellow-400',  // 1
+  'border-l-4 border-orange-500',  // 2
+  'border-l-4 border-red-600',     // 3
+  'border-l-4 border-pink-600',    // 4
+  'border-l-4 border-purple-600',  // 5
+  'border-l-4 border-blue-600',    // 6
+  'border-l-4 border-teal-600',    // 7
+  'border-l-4 border-green-600',   // 8
+  'border-l-4 border-indigo-600',  // 9
 ];
 
 const App = () => {
@@ -24,7 +30,8 @@ const App = () => {
       try {
         const res = await fetch('http://localhost:5000/api/todos');
         const data = await res.json();
-        setTasks(data);
+        // Ordenar las tareas por prioridad al cargar
+        setTasks(data.sort((a: Task, b: Task) => b.priority - a.priority));
       } catch (error) {
         console.error('Error al cargar las tareas:', error);
       }
@@ -43,7 +50,8 @@ const App = () => {
         });
 
         const newTask = await res.json();
-        setTasks([...tasks, newTask]);
+        // Añadir la nueva tarea y luego ordenarlas por prioridad
+        setTasks([...tasks, newTask].sort((a, b) => b.priority - a.priority));
         setTask('');
       } catch (error) {
         console.error('Error al agregar la tarea:', error);
@@ -58,7 +66,8 @@ const App = () => {
       });
 
       const updatedTask = await res.json();
-      setTasks(tasks.map((t) => (t._id === id ? updatedTask : t)));
+      // Actualizar la tarea y ordenar por prioridad
+      setTasks(tasks.map((t) => (t._id === id ? updatedTask : t)).sort((a, b) => b.priority - a.priority));
     } catch (error) {
       console.error('Error al completar la tarea:', error);
     }
@@ -67,7 +76,8 @@ const App = () => {
   const handleDeleteTask = async (id: string) => {
     try {
       await fetch(`http://localhost:5000/api/todos/${id}`, { method: 'DELETE' });
-      setTasks(tasks.filter((t) => t._id !== id));
+      // Filtrar las tareas eliminadas y ordenar las tareas restantes
+      setTasks(tasks.filter((t) => t._id !== id).sort((a, b) => b.priority - a.priority));
     } catch (error) {
       console.error('Error al eliminar la tarea:', error);
     }
